@@ -16,7 +16,7 @@ public interface ArticlesContractViewPresenter {
     interface View{
         void createList(ArrayList<Article> articles);
         void updateList(ArrayList<Article> articles);
-        void showError(String error);
+        void showToast(String msg);
         void goActivityWebView(String url);
     }
 }

@@ -23,9 +23,6 @@ public class ArticlesPresenter implements ArticlesContractViewPresenter.Presente
 
     @Override
     public void onViewCreated() {
-        if (!ToolsApi.isConnected(ctx)){
-            view.showError("No tiene conexion a internet");
-        }
         interactor.getArticles();
     }
 
@@ -46,13 +43,16 @@ public class ArticlesPresenter implements ArticlesContractViewPresenter.Presente
 
     //-------------------------------------- Interactor --------------------------------------------
     @Override
-    public void onSuccessGetArticles(ArrayList<Article> articles) {
+    public void onSuccessGetArticles(ArrayList<Article> articles, String warning) {
         view.createList(articles);
+        if (warning != null){
+            view.showToast(warning);
+        }
     }
 
     @Override
     public void onErrorGetArticles(String error) {
-        view.showError(error);
+        view.showToast(error);
     }
 
 }

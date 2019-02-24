@@ -11,7 +11,7 @@ public interface ArticlesContractPresenterInteractor {
     }
 
     interface Presenter{
-        void onSuccessGetArticles(ArrayList<Article> articles);
+        void onSuccessGetArticles(ArrayList<Article> articles, String warning);
         void onErrorGetArticles(String error);
     }
 }

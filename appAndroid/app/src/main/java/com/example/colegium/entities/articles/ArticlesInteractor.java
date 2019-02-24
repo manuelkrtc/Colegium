@@ -28,12 +28,13 @@ public class ArticlesInteractor implements ArticlesContractPresenterInteractor.I
     //----------------------------------------- Repository -----------------------------------------
     @Override
     public void onSuccessGetApiArticles(ArrayList<Article> articles) {
-        presenter.onSuccessGetArticles(articles);
         repository.saveLocalAllArticles(articles);
+        presenter.onSuccessGetArticles(articles,null);
     }
 
     @Override
     public void onErrorGetApiArticles(String error) {
         presenter.onErrorGetArticles(error);
+        presenter.onSuccessGetArticles(repository.getLocalAllArticles(),error);
     }
 }

@@ -87,8 +87,8 @@ public class ArticlesView extends Fragment implements ArticlesContractViewPresen
     }
 
     @Override
-    public void showError(String error) {
-        Toast.makeText(thisFragment.getActivity(),error,Toast.LENGTH_LONG).show();
+    public void showToast(String msg) {
+        Toast.makeText(thisFragment.getActivity(),msg,Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -40,6 +40,10 @@ public class ArticlesRepository implements ArticlesContractInteractorRepository.
     //-------------------------------------- Interactor --------------------------------------------
     @Override
     public void getApiArticles() {
+        if (!ToolsApi.isConnected(ctx)){
+            interactor.onErrorGetApiArticles("No tiene conexion a internet");
+            return;
+        }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, ToolsApi.getUrlgetArticlesForAndroid(), null,
                 new Response.Listener<JSONObject>() {
                     @Override
