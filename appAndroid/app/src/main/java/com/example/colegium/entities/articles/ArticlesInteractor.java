@@ -13,8 +13,6 @@ public class ArticlesInteractor implements ArticlesContractPresenterInteractor.I
     ArticlesContractInteractorRepository.Repository repository;
     ArticlesContractPresenterInteractor.Presenter presenter;
 
-    HashSet<String> _userList = new HashSet<>();
-
     public ArticlesInteractor(Activity ctx, ArticlesContractPresenterInteractor.Presenter presenter) {
         this.ctx = ctx;
         this.presenter = presenter;
@@ -31,6 +29,7 @@ public class ArticlesInteractor implements ArticlesContractPresenterInteractor.I
     @Override
     public void onSuccessGetApiArticles(ArrayList<Article> articles) {
         presenter.onSuccessGetArticles(articles);
+        repository.saveLocalAllArticles(articles);
     }
 
     @Override

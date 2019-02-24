@@ -3,6 +3,7 @@ package com.example.colegium.entities.articles;
 import android.app.Activity;
 
 import com.example.colegium.model.Article;
+import com.example.colegium.tools.ToolsApi;
 
 import java.util.ArrayList;
 
@@ -22,6 +23,9 @@ public class ArticlesPresenter implements ArticlesContractViewPresenter.Presente
 
     @Override
     public void onViewCreated() {
+        if (!ToolsApi.isConnected(ctx)){
+            view.showError("No tiene conexion a internet");
+        }
         interactor.getArticles();
     }
 

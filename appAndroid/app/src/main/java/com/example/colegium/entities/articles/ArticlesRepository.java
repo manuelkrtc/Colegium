@@ -2,6 +2,8 @@ package com.example.colegium.entities.articles;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -26,6 +28,9 @@ public class ArticlesRepository implements ArticlesContractInteractorRepository.
     Application app;
     ArticlesContractInteractorRepository.Interactor interactor;
 
+    private String keyPreferenceAllArticles= "ALL_ARTICLES";
+
+
     public ArticlesRepository(Activity ctx, ArticlesContractInteractorRepository.Interactor interactor) {
         this.ctx = ctx;
         this.app = this.ctx.getApplication();
@@ -35,10 +40,6 @@ public class ArticlesRepository implements ArticlesContractInteractorRepository.
     //-------------------------------------- Interactor --------------------------------------------
     @Override
     public void getApiArticles() {
-        if (!ToolsApi.isConnected(ctx)){
-            interactor.onErrorGetApiArticles("No tiene conexion a internet");
-            return;
-        }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, ToolsApi.getUrlgetArticlesForAndroid(), null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -64,7 +65,14 @@ public class ArticlesRepository implements ArticlesContractInteractorRepository.
 
     @Override
     public void saveLocalAllArticles(ArrayList<Article> articles) {
+        Gson gson = new Gson();
+        String json = gson.toJson(articles);
 
+        SharedPreferences sharedPreferences = ctx.getSharedPreferences(ctx.getPackageName(), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(keyPreferenceAllArticles, json);
+
+        editor.commit();
     }
 
     @Override
@@ -74,7 +82,10 @@ public class ArticlesRepository implements ArticlesContractInteractorRepository.
 
     @Override
     public ArrayList<Article> getLocalAllArticles() {
-        return null;
+        Gson gson = new Gson();
+        SharedPreferences sharedPreferences = ctx.getSharedPreferences(ctx.getPackageName(), Context.MODE_PRIVATE);
+        String articlesString = sharedPreferences.getString(keyPreferenceAllArticles , "[]");
+        return gson.fromJson(articlesString, new TypeToken<List<Article>>() {}.getType());
     }
 
     @Override
