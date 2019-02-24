@@ -1,0 +1,46 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="toolbar_height">48dp</dimen>
+
+    <dimen name="footer_height">30dp</dimen>
+    <dimen name="footer_height_x">40dp</dimen>
+
+    <dimen name="margin_xx">60dp</dimen>
+    <dimen name="margin_x"> 40dp</dimen>
+    <dimen name="margin">   20dp</dimen>
+    <dimen name="margin_s"> 10dp</dimen>
+    <dimen name="margin_ss">5dp</dimen>
+
+    <dimen name="sizeText_xx">32dp</dimen>
+    <dimen name="sizeText_x"> 18dp</dimen>
+    <dimen name="sizeText">   14dp</dimen>
+    <dimen name="sizeText_s"> 12dp</dimen>
+
+
+    //---icon
+
+    <dimen name="icon_touchable">   48dp</dimen>
+    <dimen name="icon_padding">     12dp</dimen>
+    <dimen name="icon_margin">      4dp</dimen>
+    <dimen name="icon_size">        24dp</dimen>
+
+    <dimen name="icon_touchable_s">   24dp</dimen>
+    <dimen name="icon_padding_s">     6dp</dimen>
+    <dimen name="icon_margin_s">      2dp</dimen>
+    <dimen name="icon_size_s">        18dp</dimen>
+
+    <dimen name="icon_size_x">        36dp</dimen>
+
+    <dimen name="icon_size_xx">       72dp</dimen>
+
+    //-------------------------- Ic main menu ----------------
+    <dimen name="heightIcMainMenu">70dp</dimen>
+    <dimen name="touchableIcMainMenu">130dp</dimen>
+
+    //-------------------------- NumColum ----------------
+    <dimen name="numColumMainMEnu">2</dimen>
+
+</resources>
