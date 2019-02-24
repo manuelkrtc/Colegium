@@ -4,55 +4,39 @@ public class Article {
 
     String objectID;
     String title;
+    String story_title;
     String author;
+    String url;
     String story_url;
     int created_at_i;
 
-    public Article(String objectID, String title, String author, String story_url, int created_at_i) {
+    public Article(String objectID, String title, String author, String url, int created_at_i) {
         this.objectID = objectID;
         this.title = title;
         this.author = author;
-        this.story_url = story_url;
+        this.url = url;
         this.created_at_i = created_at_i;
     }
 
-    public String getObjectID() {
+    public String getId() {
         return objectID;
     }
 
-    public void setObjectID(String objectID) {
-        this.objectID = objectID;
-    }
-
     public String getTitle() {
-        return title;
+        return title == null ? story_title : title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
 
-    public String getStory_url() {
-        return story_url;
-    }
-
-    public void setStory_url(String story_url) {
-        this.story_url = story_url;
+    public String getUrl() {
+        return url == null ? story_url : url;
     }
 
     public int getCreated_at_i() {
         return created_at_i;
-    }
-
-    public void setCreated_at_i(int created_at_i) {
-        this.created_at_i = created_at_i;
     }
 }

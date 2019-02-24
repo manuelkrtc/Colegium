@@ -6,15 +6,30 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.example.colegium.R;
 import com.example.colegium.model.Article;
+import com.example.colegium.volley.MySingleton;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.Console;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ArticlesView extends Fragment {
 
@@ -22,6 +37,7 @@ public class ArticlesView extends Fragment {
 
     MyAdapter myAdapter;
     RecyclerView recycler;
+    Fragment thisFragment = this;
 
 
     public static ArticlesView newInstance() {
@@ -40,6 +56,8 @@ public class ArticlesView extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_articles, container, false);
 
+        getApiDataSensor();
+
         recycler = view.findViewById(R.id.recycler);
 
         return view;
@@ -56,7 +74,6 @@ public class ArticlesView extends Fragment {
         articles.add(new Article("fddfdfsdsd","Su madre","yo","weereee",1223));
         articles.add(new Article("fddfdfw2222","Su madre","yo","weereee",1223));
 
-        createFridgeList(articles);
     }
 
     public void createFridgeList(ArrayList<Article> articles) {
@@ -64,6 +81,34 @@ public class ArticlesView extends Fragment {
         myAdapter = new MyAdapter(this, articles);
         recycler.setAdapter(myAdapter);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+    }
+
+    public void getApiDataSensor() {
+        String url ="https://hn.algolia.com/api/v1/search_by_date?query=android";
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+            new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Log.i("response", response.toString());
+                    try {
+                        Gson gson = new Gson();
+                        ArrayList<Article> articles = gson.fromJson(response.getJSONArray("hits").toString(), new TypeToken<List<Article>>() {}.getType());
+                        createFridgeList(articles);
+
+                        Log.i("response", response.toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("error", error.getMessage());
+            }
+        });
+
+        MySingleton.getInsant(thisFragment.getActivity()).addTorequestQueue(jsonObjectRequest);
     }
 
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
