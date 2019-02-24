@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -32,12 +33,14 @@ import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArticlesView extends Fragment implements ArticlesContractViewPresenter.View {
+public class ArticlesView extends Fragment implements ArticlesContractViewPresenter.View, SwipeRefreshLayout.OnRefreshListener{
 
     public static final String NAME = "ArticlesView";
 
-    MyAdapter myAdapter;
     RecyclerView recycler;
+    SwipeRefreshLayout swiperefresh;
+
+    MyAdapter myAdapter;
     Fragment thisFragment = this;
 
     ArticlesContractViewPresenter.Presenter presenter;
@@ -59,6 +62,9 @@ public class ArticlesView extends Fragment implements ArticlesContractViewPresen
         View view = inflater.inflate(R.layout.fragment_articles, container, false);
 
         recycler = view.findViewById(R.id.recycler);
+        swiperefresh = view.findViewById(R.id.swiperefresh);
+
+        swiperefresh.setOnRefreshListener(this);
 
         return view;
     }
@@ -70,6 +76,12 @@ public class ArticlesView extends Fragment implements ArticlesContractViewPresen
         presenter.onViewCreated();
     }
 
+    @Override
+    public void onRefresh() {
+        presenter.onRefresh();
+    }
+
+    //--------------------------------------- Presenter --------------------------------------------
     @Override
     public void createList(ArrayList<Article> articles) {
         recycler.setHasFixedSize(true);
@@ -88,13 +100,20 @@ public class ArticlesView extends Fragment implements ArticlesContractViewPresen
 
     @Override
     public void showToast(String msg) {
-        Toast.makeText(thisFragment.getActivity(),msg,Toast.LENGTH_LONG).show();
+        Toast.makeText(thisFragment.getActivity(),msg,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void goneSwipeRefresh() {
+        swiperefresh.setRefreshing(false);
     }
 
     @Override
     public void goActivityWebView(String url) {
 
     }
+
+
 
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 

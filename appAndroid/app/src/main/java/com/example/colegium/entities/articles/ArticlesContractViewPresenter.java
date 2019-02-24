@@ -9,7 +9,7 @@ public interface ArticlesContractViewPresenter {
     interface Presenter{
         void onViewCreated();
         void onClickArticle();
-        void onUpdate();
+        void onRefresh();
         void onDeleteArticle(String id);
     }
 
@@ -17,6 +17,7 @@ public interface ArticlesContractViewPresenter {
         void createList(ArrayList<Article> articles);
         void updateList(ArrayList<Article> articles);
         void showToast(String msg);
+        void goneSwipeRefresh();
         void goActivityWebView(String url);
     }
 }

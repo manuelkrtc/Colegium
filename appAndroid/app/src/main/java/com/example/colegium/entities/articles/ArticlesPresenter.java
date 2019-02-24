@@ -32,8 +32,8 @@ public class ArticlesPresenter implements ArticlesContractViewPresenter.Presente
     }
 
     @Override
-    public void onUpdate() {
-
+    public void onRefresh() {
+        interactor.getArticles();
     }
 
     @Override
@@ -44,6 +44,7 @@ public class ArticlesPresenter implements ArticlesContractViewPresenter.Presente
     //-------------------------------------- Interactor --------------------------------------------
     @Override
     public void onSuccessGetArticles(ArrayList<Article> articles, String warning) {
+        view.goneSwipeRefresh();
         view.createList(articles);
         if (warning != null){
             view.showToast(warning);
@@ -52,6 +53,7 @@ public class ArticlesPresenter implements ArticlesContractViewPresenter.Presente
 
     @Override
     public void onErrorGetArticles(String error) {
+        view.goneSwipeRefresh();
         view.showToast(error);
     }
 
