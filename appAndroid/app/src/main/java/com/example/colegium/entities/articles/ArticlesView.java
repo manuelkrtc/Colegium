@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -31,7 +32,7 @@ import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArticlesView extends Fragment {
+public class ArticlesView extends Fragment implements ArticlesContractViewPresenter.View {
 
     public static final String NAME = "ArticlesView";
 
@@ -39,6 +40,7 @@ public class ArticlesView extends Fragment {
     RecyclerView recycler;
     Fragment thisFragment = this;
 
+    ArticlesContractViewPresenter.Presenter presenter;
 
     public static ArticlesView newInstance() {
         ArticlesView fragment = new ArticlesView();
@@ -48,15 +50,13 @@ public class ArticlesView extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        presenter = new ArticlesPresenter(thisFragment.getActivity(), this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_articles, container, false);
-
-        getApiDataSensor();
 
         recycler = view.findViewById(R.id.recycler);
 
@@ -67,48 +67,33 @@ public class ArticlesView extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ArrayList<Article> articles = new ArrayList<>();
-        articles.add(new Article("fddfdf","Su madre","yo","weereee",1223));
-        articles.add(new Article("fddfdf dsd sdd","Su maddsd re","ysdo","weere  ee",1223));
-        articles.add(new Article("fddfdf s","Su madre","yo","weereee",1223));
-        articles.add(new Article("fddfdfsdsd","Su madre","yo","weereee",1223));
-        articles.add(new Article("fddfdfw2222","Su madre","yo","weereee",1223));
-
+        presenter.onViewCreated();
     }
 
-    public void createFridgeList(ArrayList<Article> articles) {
+    @Override
+    public void createList(ArrayList<Article> articles) {
         recycler.setHasFixedSize(true);
         myAdapter = new MyAdapter(this, articles);
         recycler.setAdapter(myAdapter);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
     }
 
-    public void getApiDataSensor() {
-        String url ="https://hn.algolia.com/api/v1/search_by_date?query=android";
+    @Override
+    public void updateList(ArrayList<Article> articles) {
+        recycler.setHasFixedSize(true);
+        myAdapter = new MyAdapter(this, articles);
+        recycler.setAdapter(myAdapter);
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+    }
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-            new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    Log.i("response", response.toString());
-                    try {
-                        Gson gson = new Gson();
-                        ArrayList<Article> articles = gson.fromJson(response.getJSONArray("hits").toString(), new TypeToken<List<Article>>() {}.getType());
-                        createFridgeList(articles);
+    @Override
+    public void showError(String error) {
+        Toast.makeText(thisFragment.getActivity(),error,Toast.LENGTH_LONG).show();
+    }
 
-                        Log.i("response", response.toString());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.i("error", error.getMessage());
-            }
-        });
+    @Override
+    public void goActivityWebView(String url) {
 
-        MySingleton.getInsant(thisFragment.getActivity()).addTorequestQueue(jsonObjectRequest);
     }
 
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
