@@ -10,7 +10,7 @@ public interface ArticlesContractInteractorRepository {
     interface Repository{
         void getApiArticles();
         void saveLocalAllArticles(ArrayList<Article> articles);
-        void saveLocalDeletedArticles(ArrayList<Article> articles);
+        void saveLocalDeletedArticles(ArrayList<Article> idArticles);
 
         ArrayList<Article> getLocalAllArticles();
         ArrayList<Article> getLocalDeletedArticles();

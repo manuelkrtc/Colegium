@@ -7,31 +7,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.example.colegium.R;
 import com.example.colegium.model.Article;
-import com.example.colegium.volley.MySingleton;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.Console;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ArticlesView extends Fragment implements ArticlesContractViewPresenter.View, SwipeRefreshLayout.OnRefreshListener{
 
@@ -117,14 +102,14 @@ public class ArticlesView extends Fragment implements ArticlesContractViewPresen
 
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
-        private Context _ctx;
-        private ArticlesView _fragment;
-        private ArrayList<Article> _articles;
+        private Context ctx;
+        private ArticlesView fragment;
+        private ArrayList<Article> articles;
 
         public MyAdapter(ArticlesView fragment, ArrayList<Article> articles) {
-            _fragment = fragment;
-            _articles = articles;
-            _ctx = fragment.getActivity();
+            this.fragment = fragment;
+            this.articles = articles;
+            ctx = fragment.getActivity();
         }
 
         @Override
@@ -136,26 +121,34 @@ public class ArticlesView extends Fragment implements ArticlesContractViewPresen
 
         @Override
         public void onBindViewHolder(ViewHolder holder, final int position) {
-            final Article article = _articles.get(position);
+            final Article article = articles.get(position);
             holder.tvTitle.setText(article.getTitle());
             holder.tvAuthorTime.setText(String.format("%s - %s", article.getAuthor(), article.getCreated_at_i()));
+            holder.tvDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    presenter.onDeleteArticle(article);
+                }
+            });
         }
 
         @Override
         public int getItemCount() {
-            return _articles.size();
+            return articles.size();
         }
 
         public  class ViewHolder extends RecyclerView.ViewHolder {
 
             public ViewGroup parent;
             public TextView tvTitle;
+            public TextView tvDelete;
             public TextView tvAuthorTime;
 
             public ViewHolder(View v) {
                 super(v);
                 parent = v.findViewById(R.id.parent);
                 tvTitle = v.findViewById(R.id.tvTitle);
+                tvDelete = v.findViewById(R.id.tvDelete);
                 tvAuthorTime = v.findViewById(R.id.tvAuthorTime);
             }
         }

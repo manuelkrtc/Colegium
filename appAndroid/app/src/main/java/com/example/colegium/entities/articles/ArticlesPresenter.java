@@ -37,13 +37,13 @@ public class ArticlesPresenter implements ArticlesContractViewPresenter.Presente
     }
 
     @Override
-    public void onDeleteArticle(String id) {
-
+    public void onDeleteArticle(Article article) {
+        interactor.deleteArticle(article);
     }
 
     //-------------------------------------- Interactor --------------------------------------------
     @Override
-    public void onSuccessGetArticles(ArrayList<Article> articles, String warning) {
+    public void returnArticles(ArrayList<Article> articles, String warning) {
         view.goneSwipeRefresh();
         view.createList(articles);
         if (warning != null){
@@ -52,7 +52,7 @@ public class ArticlesPresenter implements ArticlesContractViewPresenter.Presente
     }
 
     @Override
-    public void onErrorGetArticles(String error) {
+    public void error(String error) {
         view.goneSwipeRefresh();
         view.showToast(error);
     }

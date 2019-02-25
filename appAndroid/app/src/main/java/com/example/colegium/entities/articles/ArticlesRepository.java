@@ -25,16 +25,24 @@ import java.util.List;
 public class ArticlesRepository implements ArticlesContractInteractorRepository.Repository {
 
     Activity ctx;
-    Application app;
     ArticlesContractInteractorRepository.Interactor interactor;
 
+    Gson gson;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editorSharedPreferences;
+
     private String keyPreferenceAllArticles= "ALL_ARTICLES";
+    private String keyPreferenceIdDeletedArticles= "ID_DELETED_ARTICLES";
+
 
 
     public ArticlesRepository(Activity ctx, ArticlesContractInteractorRepository.Interactor interactor) {
         this.ctx = ctx;
-        this.app = this.ctx.getApplication();
         this.interactor = interactor;
+
+        gson = new Gson();
+        sharedPreferences = ctx.getSharedPreferences(ctx.getPackageName(), Context.MODE_PRIVATE);
+        editorSharedPreferences = sharedPreferences.edit();
     }
 
     //-------------------------------------- Interactor --------------------------------------------
@@ -44,7 +52,7 @@ public class ArticlesRepository implements ArticlesContractInteractorRepository.
             interactor.onErrorGetApiArticles("No tiene conexion a internet");
             return;
         }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, ToolsApi.getUrlgetArticlesForAndroid(), null,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, ToolsApi.getUrlgetArticlesForIos(), null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -69,32 +77,30 @@ public class ArticlesRepository implements ArticlesContractInteractorRepository.
 
     @Override
     public void saveLocalAllArticles(ArrayList<Article> articles) {
-        Gson gson = new Gson();
         String json = gson.toJson(articles);
-
-        SharedPreferences sharedPreferences = ctx.getSharedPreferences(ctx.getPackageName(), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(keyPreferenceAllArticles, json);
-
-        editor.commit();
+        editorSharedPreferences.putString(keyPreferenceAllArticles, json);
+        editorSharedPreferences.commit();
     }
 
     @Override
     public void saveLocalDeletedArticles(ArrayList<Article> articles) {
-
+        String json = gson.toJson(articles);
+        editorSharedPreferences.putString(keyPreferenceIdDeletedArticles, json);
+        editorSharedPreferences.commit();
     }
 
     @Override
     public ArrayList<Article> getLocalAllArticles() {
-        Gson gson = new Gson();
-        SharedPreferences sharedPreferences = ctx.getSharedPreferences(ctx.getPackageName(), Context.MODE_PRIVATE);
+        gson = new Gson();
         String articlesString = sharedPreferences.getString(keyPreferenceAllArticles , "[]");
         return gson.fromJson(articlesString, new TypeToken<List<Article>>() {}.getType());
     }
 
     @Override
     public ArrayList<Article> getLocalDeletedArticles() {
-        return null;
+        gson = new Gson();
+        String articlesString = sharedPreferences.getString(keyPreferenceIdDeletedArticles , "[]");
+        return gson.fromJson(articlesString, new TypeToken<List<Article>>() {}.getType());
     }
 
 }

@@ -10,7 +10,7 @@ public interface ArticlesContractViewPresenter {
         void onViewCreated();
         void onClickArticle();
         void onRefresh();
-        void onDeleteArticle(String id);
+        void onDeleteArticle(Article article);
     }
 
     interface View{

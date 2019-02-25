@@ -8,10 +8,11 @@ public interface ArticlesContractPresenterInteractor {
 
     interface Interactor{
         void getArticles();
+        void deleteArticle(Article article);
     }
 
     interface Presenter{
-        void onSuccessGetArticles(ArrayList<Article> articles, String warning);
-        void onErrorGetArticles(String error);
+        void returnArticles(ArrayList<Article> articles, String warning);
+        void error(String error);
     }
 }
