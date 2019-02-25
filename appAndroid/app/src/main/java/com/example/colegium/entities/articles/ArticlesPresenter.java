@@ -27,8 +27,8 @@ public class ArticlesPresenter implements ArticlesContractViewPresenter.Presente
     }
 
     @Override
-    public void onClickArticle() {
-
+    public void onClickArticle(Article article) {
+        view.notifyClickArticle(article);
     }
 
     @Override

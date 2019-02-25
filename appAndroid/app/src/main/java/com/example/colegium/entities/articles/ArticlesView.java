@@ -25,6 +25,7 @@ public class ArticlesView extends Fragment implements ArticlesContractViewPresen
     RecyclerView recycler;
     SwipeRefreshLayout swiperefresh;
 
+    Listener mListener;
     MyAdapter myAdapter;
     Fragment thisFragment = this;
 
@@ -38,6 +39,7 @@ public class ArticlesView extends Fragment implements ArticlesContractViewPresen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(mListener == null) createListener(thisFragment.getActivity());
         presenter = new ArticlesPresenter(thisFragment.getActivity(), this);
     }
 
@@ -59,6 +61,12 @@ public class ArticlesView extends Fragment implements ArticlesContractViewPresen
         super.onViewCreated(view, savedInstanceState);
 
         presenter.onViewCreated();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        createListener(context);
     }
 
     @Override
@@ -94,11 +102,22 @@ public class ArticlesView extends Fragment implements ArticlesContractViewPresen
     }
 
     @Override
-    public void goActivityWebView(String url) {
-
+    public void notifyClickArticle(Article article) {
+        mListener.onClickArticle(article);
     }
 
+    private void createListener(Context context){
+        if (context instanceof Listener) {
+            mListener = (Listener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
 
+    public interface Listener {
+        void onClickArticle(Article article);
+    }
 
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
@@ -128,6 +147,13 @@ public class ArticlesView extends Fragment implements ArticlesContractViewPresen
                 @Override
                 public void onClick(View view) {
                     presenter.onDeleteArticle(article);
+                }
+            });
+
+            holder.parent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    presenter.onClickArticle(article);
                 }
             });
         }

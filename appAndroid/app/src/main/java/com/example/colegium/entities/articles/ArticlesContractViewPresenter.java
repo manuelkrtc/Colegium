@@ -8,7 +8,7 @@ public interface ArticlesContractViewPresenter {
 
     interface Presenter{
         void onViewCreated();
-        void onClickArticle();
+        void onClickArticle(Article article);
         void onRefresh();
         void onDeleteArticle(Article article);
     }
@@ -18,6 +18,6 @@ public interface ArticlesContractViewPresenter {
         void updateList(ArrayList<Article> articles);
         void showToast(String msg);
         void goneSwipeRefresh();
-        void goActivityWebView(String url);
+        void notifyClickArticle(Article article);
     }
 }

@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 
 import com.example.colegium.entities.articles.ArticlesView;
+import com.example.colegium.entities.webpage.WebPageView;
+import com.example.colegium.model.Article;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ArticlesView.Listener {
 
     ViewGroup fragment;
 
@@ -35,5 +37,20 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(refFragment, fragment);
         fragmentTransaction.addToBackStack(fragment.NAME);
         fragmentTransaction.commit();
+    }
+
+    private void goFragmentWebPage(Article article) {
+
+        WebPageView fragment = WebPageView.newInstance(article);
+
+        fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(refFragment, fragment);
+        fragmentTransaction.addToBackStack(fragment.NAME);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onClickArticle(Article article) {
+        goFragmentWebPage(article);
     }
 }

@@ -1,6 +1,9 @@
 package com.example.colegium.model;
 
-public class Article {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Article implements Parcelable {
 
     String objectID;
     String title;
@@ -17,6 +20,28 @@ public class Article {
         this.url = url;
         this.created_at_i = created_at_i;
     }
+
+    protected Article(Parcel in) {
+        objectID = in.readString();
+        title = in.readString();
+        story_title = in.readString();
+        author = in.readString();
+        url = in.readString();
+        story_url = in.readString();
+        created_at_i = in.readInt();
+    }
+
+    public static final Creator<Article> CREATOR = new Creator<Article>() {
+        @Override
+        public Article createFromParcel(Parcel in) {
+            return new Article(in);
+        }
+
+        @Override
+        public Article[] newArray(int size) {
+            return new Article[size];
+        }
+    };
 
     public String getId() {
         return objectID;
@@ -38,5 +63,21 @@ public class Article {
 
     public int getCreated_at_i() {
         return created_at_i;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(objectID);
+        parcel.writeString(title);
+        parcel.writeString(story_title);
+        parcel.writeString(author);
+        parcel.writeString(url);
+        parcel.writeString(story_url);
+        parcel.writeInt(created_at_i);
     }
 }

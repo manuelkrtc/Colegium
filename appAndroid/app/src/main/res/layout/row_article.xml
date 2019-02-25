@@ -25,7 +25,8 @@
         android:paddingTop="@dimen/margin"
         android:paddingBottom="@dimen/margin"
         android:paddingLeft="@dimen/margin_x"
-        android:paddingRight="@dimen/margin_x">
+        android:paddingRight="@dimen/margin_x"
+        android:clickable="true">
 
 
         <TextView
