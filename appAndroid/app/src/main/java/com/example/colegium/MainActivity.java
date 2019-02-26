@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements ArticlesView.List
 
         fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(refFragment, fragment);
-        fragmentTransaction.addToBackStack(fragment.NAME);
         fragmentTransaction.commit();
     }
 
