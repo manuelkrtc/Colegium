@@ -28,6 +28,10 @@ public class ArticlesPresenter implements ArticlesContractViewPresenter.Presente
 
     @Override
     public void onClickArticle(Article article) {
+        if(!ToolsApi.isConnected(ctx)){
+            view.showToast("Check your internet connection.");
+            return;
+        }
         view.notifyClickArticle(article);
     }
 

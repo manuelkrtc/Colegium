@@ -49,7 +49,7 @@ public class ArticlesRepository implements ArticlesContractInteractorRepository.
     @Override
     public void getApiArticles() {
         if (!ToolsApi.isConnected(ctx)){
-            interactor.onErrorGetApiArticles("No tiene conexion a internet");
+            interactor.onErrorGetApiArticles("Check your internet connection.");
             return;
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, ToolsApi.getUrlgetArticlesForIos(), null,
