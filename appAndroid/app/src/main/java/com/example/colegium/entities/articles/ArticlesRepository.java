@@ -52,7 +52,7 @@ public class ArticlesRepository implements ArticlesContractInteractorRepository.
             interactor.onErrorGetApiArticles("Check your internet connection.");
             return;
         }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, ToolsApi.getUrlgetArticlesForIos(), null,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, ToolsApi.getUrlgetArticlesForAndroid(), null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
