@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements ArticlesView.List
         WebPageView fragment = WebPageView.newInstance(article);
 
         fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(refFragment, fragment);
+        fragmentTransaction.add(refFragment, fragment);
         fragmentTransaction.addToBackStack(fragment.NAME);
         fragmentTransaction.commit();
     }
