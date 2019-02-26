@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +18,17 @@ import android.widget.Toast;
 import com.example.colegium.R;
 import com.example.colegium.model.Article;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class ArticlesView extends Fragment implements ArticlesContractViewPresenter.View, SwipeRefreshLayout.OnRefreshListener{
 
     public static final String NAME = "ArticlesView";
+
+    PrettyTime prettyTime;
 
     RecyclerView recycler;
     SwipeRefreshLayout swiperefresh;
@@ -41,6 +49,7 @@ public class ArticlesView extends Fragment implements ArticlesContractViewPresen
         super.onCreate(savedInstanceState);
         if(mListener == null) createListener(thisFragment.getActivity());
         presenter = new ArticlesPresenter(thisFragment.getActivity(), this);
+        prettyTime = new PrettyTime();
     }
 
     @Override
@@ -142,7 +151,7 @@ public class ArticlesView extends Fragment implements ArticlesContractViewPresen
         public void onBindViewHolder(ViewHolder holder, final int position) {
             final Article article = articles.get(position);
             holder.tvTitle.setText(article.getTitle());
-            holder.tvAuthorTime.setText(String.format("%s - %s", article.getAuthor(), article.getCreated_at_i()));
+            holder.tvAuthorTime.setText(String.format("%s - %s", article.getAuthor(), prettyTime.format(new Date(article.getCreated_at_i()))));
             holder.tvDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -156,6 +165,7 @@ public class ArticlesView extends Fragment implements ArticlesContractViewPresen
                     presenter.onClickArticle(article);
                 }
             });
+
         }
 
         @Override

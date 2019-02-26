@@ -11,7 +11,7 @@ public class Article implements Parcelable {
     String author;
     String url;
     String story_url;
-    int created_at_i;
+    long created_at_i;
 
     public Article(String objectID, String title, String author, String url, int created_at_i) {
         this.objectID = objectID;
@@ -61,8 +61,8 @@ public class Article implements Parcelable {
         return url == null ? story_url : url;
     }
 
-    public int getCreated_at_i() {
-        return created_at_i;
+    public long getCreated_at_i() {
+        return created_at_i * 1000;
     }
 
     @Override
@@ -78,6 +78,6 @@ public class Article implements Parcelable {
         parcel.writeString(author);
         parcel.writeString(url);
         parcel.writeString(story_url);
-        parcel.writeInt(created_at_i);
+        parcel.writeLong(created_at_i);
     }
 }
