@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
 
 import com.example.colegium.R;
 import com.example.colegium.model.Article;
@@ -37,6 +36,7 @@ public class WebPageView extends Fragment{
         super.onCreate(savedInstanceState);
         article = getArguments().getParcelable(KEY_ARTICLE);
         pd = ProgressDialog.show(this.getActivity(), "", "Loading...",true);
+        pd.setCancelable(true);
     }
 
     @Override
@@ -59,4 +59,5 @@ public class WebPageView extends Fragment{
             }
         });
     }
+
 }
