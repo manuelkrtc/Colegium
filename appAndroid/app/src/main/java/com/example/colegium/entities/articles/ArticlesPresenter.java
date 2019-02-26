@@ -45,7 +45,13 @@ public class ArticlesPresenter implements ArticlesContractViewPresenter.Presente
     @Override
     public void returnArticles(ArrayList<Article> articles, String warning) {
         view.goneSwipeRefresh();
-        view.createList(articles);
+
+        if (view.wasCreatedList()) {
+            view.updateList(articles);
+        } else {
+            view.createList(articles);
+        }
+
         if (warning != null){
             view.showToast(warning);
         }

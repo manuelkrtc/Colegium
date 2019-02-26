@@ -94,10 +94,13 @@ public class ArticlesView extends Fragment implements ArticlesContractViewPresen
 
     @Override
     public void updateList(ArrayList<Article> articles) {
-        recycler.setHasFixedSize(true);
-        myAdapter = new MyAdapter(this, articles);
-        recycler.setAdapter(myAdapter);
-        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        myAdapter.setList(articles);
+        myAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean wasCreatedList() {
+        return myAdapter != null;
     }
 
     @Override
@@ -138,6 +141,10 @@ public class ArticlesView extends Fragment implements ArticlesContractViewPresen
             this.fragment = fragment;
             this.articles = articles;
             ctx = fragment.getActivity();
+        }
+
+        public void setList(ArrayList<Article> articles) {
+            this.articles = articles;
         }
 
         @Override

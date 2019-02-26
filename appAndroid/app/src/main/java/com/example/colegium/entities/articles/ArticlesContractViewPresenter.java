@@ -16,6 +16,7 @@ public interface ArticlesContractViewPresenter {
     interface View{
         void createList(ArrayList<Article> articles);
         void updateList(ArrayList<Article> articles);
+        boolean wasCreatedList();
         void showToast(String msg);
         void goneSwipeRefresh();
         void notifyClickArticle(Article article);
